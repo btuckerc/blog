@@ -26,10 +26,21 @@ if [ "$current_branch" != "main" ]; then
     git checkout main || git checkout -b main
 fi
 
-# Ensure working directory is clean
+# Check for uncommitted changes and handle them interactively
 if [ -n "$(git status --porcelain)" ]; then
-    echo "❌ Working directory is not clean. Please commit or stash changes first."
-    exit 1
+    echo "📝 Uncommitted changes detected:"
+    git status --short
+
+    read -p "Would you like to commit these changes? (y/n): " should_commit
+    if [[ $should_commit =~ ^[Yy]$ ]]; then
+        git add .
+        read -p "Enter commit message (default: 'Update content'): " commit_msg
+        commit_msg=${commit_msg:-"Update content"}
+        git commit -m "$commit_msg"
+    else
+        echo "❌ Please handle the uncommitted changes before deploying."
+        exit 1
+    fi
 fi
 
 # Run the image migration script to ensure all images are in the right place
@@ -74,19 +85,25 @@ git commit -m "Update site: $(date +"%Y-%m-%d %H:%M:%S")" || true
 # Add remote if it doesn't exist
 if ! git remote | grep -q "^origin$"; then
     echo "⚠️  No remote 'origin' found."
-    echo "Please add a remote with: git remote add origin <your-repo-url>"
-    echo "Then run this script again."
-    git checkout main
-    exit 1
+    read -p "Would you like to add a GitHub remote now? (y/n): " add_remote
+    if [[ $add_remote =~ ^[Yy]$ ]]; then
+        read -p "Enter your GitHub repository URL: " repo_url
+        git remote add origin "$repo_url"
+    else
+        echo "Please add a remote later with: git remote add origin <your-repo-url>"
+        git checkout main
+        exit 1
+    fi
 fi
 
 # Push changes
 echo "⬆️  Pushing to public branch..."
 git push origin public -f
 
-# Switch back to main branch
-echo "↩️  Switching back to main branch..."
+# Push main branch as well
+echo "⬆️  Pushing main branch..."
 git checkout main
+git push -u origin main
 
 echo "✅ Deploy complete! The static site is now in the public branch."
 echo "🌐 You can now use the contents of the public branch for hosting."
