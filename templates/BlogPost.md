@@ -23,6 +23,7 @@ description: "<% overview %>"
 date: <% date %>
 modified: <% tp.file.last_modified_date("YYYY-MM-DDTHH:mm:ssZ") %>
 author: "Tucker"
+canonicalURL: "{{ .Site.BaseURL }}{{ .RelPermalink }}"
 tags:
   - blog
 categories:
@@ -38,9 +39,10 @@ searchHidden: false
 ShowReadingTime: true
 ShowBreadCrumbs: true
 ShowPostNavLinks: true
-ShowWordCount: true
+ShowWordCount: false
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
+ShowEditButton: true
 cover:
     image: "<image path/url>"
     alt: "<alt text>"
@@ -48,7 +50,7 @@ cover:
     relative: false
     hidden: true
 editPost:
-    URL: "https://github.com/btuckerc/blog/content"
+    URL: "https://github.com/btuckerc/blog/tree/main/content/Blog-Posts"
     Text: "Suggest Changes"
     appendFilePath: true
 ---

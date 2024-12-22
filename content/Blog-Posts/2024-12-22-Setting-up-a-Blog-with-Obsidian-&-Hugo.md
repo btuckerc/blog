@@ -1,8 +1,8 @@
 ---
 title: "Setting up a Blog with Obsidian & Hugo"
 description: "This post explores setting up a Blog with Obsidian & Hugo, discussing key concepts and practical applications."
-date: 2024-12-22
-modified: 2024-12-22
+date: 2024-12-22T15:33:29-05:00
+modified: 2024-12-22T15:33:27-05:00
 author: "Tucker"
 tags:
   - blog

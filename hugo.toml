@@ -73,7 +73,7 @@ url = "https://x.com/btuckerc"
 
 [[params.socialIcons]]
 name = "bluesky"
-url = "https://bsky.app/profile/btuckerc.bsky.social"
+url = "https://bsky.app/profile/btuckerc.com"
 
 [menu]
 [[menu.main]]
