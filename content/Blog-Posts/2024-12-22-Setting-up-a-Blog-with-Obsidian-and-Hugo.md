@@ -25,10 +25,10 @@ ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 ShowEditButton: true
 cover:
-  image: <image path/url>
-  alt: <alt text>
-  caption: <text>
-  relative: false
+  image:
+  alt: "2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-1"
+  caption: "2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-1"
+  relative: true
   hidden: true
 editPost:
   URL: https://github.com/btuckerc/blog/content
@@ -39,11 +39,13 @@ editPost:
 # Overview
 This post explores setting up a Blog with Obsidian & Hugo, discussing key concepts and practical applications.
 
+![|200](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-1.png)
+
 # Setting Up the Vault
 
-```bash  
-ln -sf /Users/tucker/Documents/GitHub/Blog/content/Blog-Posts ~/Documents/00-Vault/00\ -\ Inbox/07\ -\ BLOG  
-ln -sf /Users/tucker/Documents/GitHub/Blog/content/Blog-Attachments ~/Documents/00-Vault/00\ -\ Inbox/07\ -\ BLOG  
+```bash
+ln -sf /Users/tucker/Documents/GitHub/Blog/content/Blog-Posts ~/Documents/00-Vault/00\ -\ Inbox/07\ -\ BLOG
+ln -sf /Users/tucker/Documents/GitHub/Blog/content/Blog-Attachments ~/Documents/00-Vault/00\ -\ Inbox/07\ -\ BLOG
 ```
 
 https://github.com/zoni/obsidian-export/?tab=readme-ov-file#relative-links-with-hugo
