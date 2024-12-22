@@ -46,6 +46,10 @@ fi
 # Store the current directory
 CURRENT_DIR=$(pwd)
 
+# Update submodules
+echo "📦 Updating submodules..."
+git submodule update --init --recursive
+
 # Run the image migration script to ensure all images are in the right place
 echo "🖼️  Checking image locations..."
 ./scripts/migrate_attachments.sh
@@ -99,14 +103,23 @@ if ! git remote | grep -q "^origin$"; then
     fi
 fi
 
-# Push changes
-echo "⬆️  Pushing to public branch..."
-git push origin public -f
-
-# Push main branch as well
+# Push main branch first (this will be our default)
 echo "⬆️  Pushing main branch..."
 git checkout main
 git push -u origin main
 
+# Push public branch
+echo "⬆️  Pushing public branch..."
+git checkout public
+git push origin public -f
+
+# Switch back to main branch
+git checkout main
+
+# Set main as the default branch locally
+git config branch.main.remote origin
+git config branch.main.merge refs/heads/main
+
 echo "✅ Deploy complete! The static site is now in the public branch."
 echo "🌐 You can now use the contents of the public branch for hosting."
+echo "💡 Note: Please go to your GitHub repository settings and set 'main' as the default branch."
