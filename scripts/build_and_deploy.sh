@@ -26,43 +26,39 @@ if [ "$current_branch" != "main" ]; then
     git checkout main || git checkout -b main
 fi
 
-# Check for uncommitted changes and handle them interactively
-if [ -n "$(git status --porcelain)" ]; then
-    echo "📝 Uncommitted changes detected:"
-    git status --short
+# Remove public directory if it exists
+echo "🗑️  Cleaning public directory..."
+rm -rf public
 
-    read -p "Would you like to commit these changes? (y/n): " should_commit
-    if [[ $should_commit =~ ^[Yy]$ ]]; then
-        git add .
-        read -p "Enter commit message (default: 'Update content'): " commit_msg
-        commit_msg=${commit_msg:-"Update content"}
-        git commit -m "$commit_msg"
+# Auto-commit blog post changes, check other changes interactively
+if [ -n "$(git status --porcelain)" ]; then
+    # Check if there are changes only in content/Blog-Posts
+    if [ -n "$(git status --porcelain | grep -v "content/Blog-Posts" | grep -v "public/" | grep -v "D public")" ]; then
+        echo "📝 Changes detected outside of blog posts:"
+        git status --short | grep -v "content/Blog-Posts" | grep -v "public/" | grep -v "D public"
+
+        read -p "Would you like to commit these changes? (y/n): " should_commit
+        if [[ $should_commit =~ ^[Yy]$ ]]; then
+            git add .
+            read -p "Enter commit message (default: 'Update content'): " commit_msg
+            commit_msg=${commit_msg:-"Update content"}
+            git commit -m "$commit_msg"
+        else
+            echo "❌ Please handle the uncommitted changes before deploying."
+            exit 1
+        fi
     else
-        echo "❌ Please handle the uncommitted changes before deploying."
-        exit 1
+        # Auto-commit blog post changes
+        if [ -n "$(git status --porcelain | grep "content/Blog-Posts")" ]; then
+            echo "📝 Auto-committing blog post changes..."
+            git add content/Blog-Posts
+            git commit -m "Updating blog post [script]"
+        fi
     fi
 fi
 
 # Store the current directory
 CURRENT_DIR=$(pwd)
-
-# Update submodules
-echo "📦 Updating submodules..."
-git submodule update --init --recursive
-
-# Run the image migration script to ensure all images are in the right place
-echo "🖼️  Checking image locations..."
-./scripts/migrate_attachments.sh
-
-# Build the static site with the paper theme
-echo "🏗️  Building static site..."
-hugo -t paper --minify
-
-# Create a temporary directory for the public files
-echo "📦 Creating temporary directory..."
-TEMP_DIR=$(mktemp -d)
-cp -r public/* "$TEMP_DIR/"
-cp -r public/.[!.]* "$TEMP_DIR/" 2>/dev/null || true
 
 # Create and switch to public branch (force clean)
 echo "📋 Setting up public branch..."
@@ -71,20 +67,23 @@ if git show-ref --verify --quiet refs/heads/public; then
     git branch -D public
 fi
 
-# Create a new public branch from scratch
-git checkout --orphan public
+# Create a new public branch from main
+git checkout -b public main
+
+# Remove everything except .git
+echo "🗑️  Cleaning public branch..."
 git rm -rf .
 git clean -fdx
 
-# Copy the built site from the temporary directory
-echo "📋 Copying new content..."
-cp -r "$TEMP_DIR"/* .
-cp -r "$TEMP_DIR"/.[!.]* . 2>/dev/null || true
+# Update submodules
+echo "📦 Updating submodules..."
+git submodule update --init --recursive
 
-# Cleanup temporary directory
-rm -rf "$TEMP_DIR"
+# Build the static site with the paper theme
+echo "🏗️  Building static site..."
+hugo -t paper --minify
 
-# Add and commit
+# Add and commit public content
 echo "💾 Committing changes..."
 git add .
 git commit -m "Update site: $(date +"%Y-%m-%d %H:%M:%S")" || true
@@ -103,14 +102,8 @@ if ! git remote | grep -q "^origin$"; then
     fi
 fi
 
-# Push main branch first (this will be our default)
-echo "⬆️  Pushing main branch..."
-git checkout main
-git push -u origin main
-
 # Push public branch
 echo "⬆️  Pushing public branch..."
-git checkout public
 git push origin public -f
 
 # Switch back to main branch and reinitialize submodules
@@ -118,10 +111,5 @@ echo "↩️  Switching back to main branch and reinitializing submodules..."
 git checkout main
 git submodule update --init --recursive
 
-# Set main as the default branch locally
-git config branch.main.remote origin
-git config branch.main.merge refs/heads/main
-
 echo "✅ Deploy complete! The static site is now in the public branch."
 echo "🌐 You can now use the contents of the public branch for hosting."
-echo "💡 Note: Please go to your GitHub repository settings and set 'main' as the default branch."
