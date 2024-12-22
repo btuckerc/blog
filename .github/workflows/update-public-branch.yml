@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# Add permissions block
+permissions:
+  contents: write
+
 jobs:
   update-public-branch:
     runs-on: ubuntu-latest
