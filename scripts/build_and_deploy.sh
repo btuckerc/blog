@@ -113,8 +113,10 @@ echo "⬆️  Pushing public branch..."
 git checkout public
 git push origin public -f
 
-# Switch back to main branch
+# Switch back to main branch and reinitialize submodules
+echo "↩️  Switching back to main branch and reinitializing submodules..."
 git checkout main
+git submodule update --init --recursive
 
 # Set main as the default branch locally
 git config branch.main.remote origin

@@ -65,7 +65,7 @@ find content/Blog-Posts -name "*.bak" -delete
 
 # Verify images are servable by Hugo
 echo "Verifying images are servable by Hugo..."
-hugo server -D --cleanDestinationDir --watch=content,static,themes &
+hugo server -D --cleanDestinationDir &
 SERVER_PID=$!
 
 # Wait for server to start
