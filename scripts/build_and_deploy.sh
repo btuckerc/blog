@@ -43,20 +43,22 @@ if [ -n "$(git status --porcelain)" ]; then
     fi
 fi
 
+# Store the current directory
+CURRENT_DIR=$(pwd)
+
 # Run the image migration script to ensure all images are in the right place
 echo "🖼️  Checking image locations..."
 ./scripts/migrate_attachments.sh
-
-# Clean existing public directory
-echo "🧹 Cleaning public directory..."
-rm -rf public
 
 # Build the static site with the paper theme
 echo "🏗️  Building static site..."
 hugo -t paper --minify
 
-# Store the absolute path to the public directory
-PUBLIC_DIR="$(pwd)/public"
+# Create a temporary directory for the public files
+echo "📦 Creating temporary directory..."
+TEMP_DIR=$(mktemp -d)
+cp -r public/* "$TEMP_DIR/"
+cp -r public/.[!.]* "$TEMP_DIR/" 2>/dev/null || true
 
 # Create and switch to public branch (force clean)
 echo "📋 Setting up public branch..."
@@ -70,10 +72,13 @@ git checkout --orphan public
 git rm -rf .
 git clean -fdx
 
-# Copy the built site from the stored public directory
+# Copy the built site from the temporary directory
 echo "📋 Copying new content..."
-cp -r "$PUBLIC_DIR"/* .
-cp -r "$PUBLIC_DIR"/.[!.]* . 2>/dev/null || true
+cp -r "$TEMP_DIR"/* .
+cp -r "$TEMP_DIR"/.[!.]* . 2>/dev/null || true
+
+# Cleanup temporary directory
+rm -rf "$TEMP_DIR"
 
 # Add and commit
 echo "💾 Committing changes..."
