@@ -34,7 +34,7 @@ ShowRssButtonInSectionTermList = true
 UseHugoToc = true
 
 # Share button configuration
-shareIconStyle = "airplane" # can be "airplane" or "share"
+shareIconStyle = "share" # can be "airplane" or "share"
 shareIconGap = true # true for small gap, false for no gap
 
 # Search Configuration

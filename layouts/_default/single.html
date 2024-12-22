@@ -7,11 +7,11 @@
             <span class="title-wrapper{{ if not site.Params.shareIconGap }} no-gap{{end}}">
                 {{ .Title }}
                 {{- if site.Params.ShowShareButtons }}
-                <button id="share-button-top" class="share-button" aria-label="Share this post">
+                <button id="share-button-top" class="share-button" aria-label="Copy link to this post" title="Copy link">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                        <path d="M21 3L14.5 21.5c-.3.8-1.5.8-1.8 0L10 14l-7-2.7c-.8-.3-.8-1.5 0-1.8L21 3z"></path>
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                     </svg>
                 </button>
                 {{- end }}
@@ -29,30 +29,11 @@
         <script>
             document.getElementById('share-button-top').addEventListener('click', async () => {
                 const url = '{{ .Permalink }}';
-                const title = '{{ .Title }}';
-
-                if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            title: title,
-                            url: url
-                        });
-                    } catch (err) {
-                        if (err.name !== 'AbortError') {
-                            copyToClipboard(url);
-                        }
-                    }
-                } else {
-                    copyToClipboard(url);
-                }
-            });
-
-            function copyToClipboard(text) {
                 const button = document.getElementById('share-button-top');
                 const originalText = button.innerHTML;
 
                 if (navigator.clipboard) {
-                    navigator.clipboard.writeText(text)
+                    navigator.clipboard.writeText(url)
                         .then(() => {
                             button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
                             setTimeout(() => {
@@ -60,12 +41,12 @@
                             }, 2000);
                         })
                         .catch(() => {
-                            fallbackCopy(text, button, originalText);
+                            fallbackCopy(url, button, originalText);
                         });
                 } else {
-                    fallbackCopy(text, button, originalText);
+                    fallbackCopy(url, button, originalText);
                 }
-            }
+            });
 
             function fallbackCopy(text, button, originalText) {
                 const textarea = document.createElement('textarea');

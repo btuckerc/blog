@@ -18,7 +18,7 @@
 }
 
 .share-button:hover {
-    transform: translateY(-1px);
+    transform: translateY(-4px);
 }
 
 /* Title share button specific styles */
@@ -26,7 +26,7 @@
     display: flex;
         align-items: flex-start;
         gap: 1rem;
-        line-height: 1.2;
+        line-height: 1.4;
 }
 
 .post-title {
@@ -49,7 +49,7 @@
         fill: none;
         color: var(--secondary);
     }
-    
+
     /* Post meta spacing adjustments */
     .post-meta {
         display: flex;
@@ -59,29 +59,27 @@
         justify-content: flex-start;
         gap: 2rem;
     }
-    
+
     /* Time and Suggest Changes spacing */
     .post-meta .post-time {
         margin-right: 2rem;
-    
+
 
         .post-meta a[href*="suggest-changes"] {
             margin-left: 2rem;
         }
-    
+
         /* Responsive adjustments */
         @media screen and (max-width: 768px) {
             .post-meta {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.5rem;
-    
-    
+
                 .post-meta .post-title {
                     margin-right: 0;
                     width: 100%;
-    
-    
+
                     .post-meta .share-buttons {
                         margin-left: 0;
                         margin-top: 0.5rem;

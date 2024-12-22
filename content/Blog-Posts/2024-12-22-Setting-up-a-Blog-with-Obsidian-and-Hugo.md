@@ -39,9 +39,7 @@ editPost:
 # Overview
 This post explores setting up a Blog with Obsidian & Hugo, discussing key concepts and practical applications.
 
-# Content
-
-## Setting Up the Vault
+# Setting Up the Vault
 
 ```bash  
 ln -sf /Users/tucker/Documents/GitHub/Blog/content/Blog-Posts ~/Documents/00-Vault/00\ -\ Inbox/07\ -\ BLOG  

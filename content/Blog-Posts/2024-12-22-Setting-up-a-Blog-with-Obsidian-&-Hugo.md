@@ -1,9 +1,9 @@
 ---
-title: "Setting up a Blog with Obsidian & Hugo"
-description: "This post explores setting up a Blog with Obsidian & Hugo, discussing key concepts and practical applications."
+title: Setting up a Blog with Obsidian & Hugo
+description: This post explores setting up a Blog with Obsidian & Hugo, discussing key concepts and practical applications.
 date: 2024-12-22T15:33:29-05:00
 modified: 2024-12-22T15:33:27-05:00
-author: "Tucker"
+author: Tucker
 tags:
   - blog
 categories:
@@ -13,12 +13,11 @@ TocOpen: false
 draft: false
 hidemeta: false
 comments: false
-canonicalURL: "https://canonical.url/to/page"
-disableHLJS: true
-disableShare: false
+canonicalURL: https://canonical.url/to/page
 disableHLJS: false
+disableShare: false
 hideSummary: false
-searchHidden: true
+searchHidden: false
 ShowReadingTime: true
 ShowBreadCrumbs: true
 ShowPostNavLinks: true
@@ -26,15 +25,15 @@ ShowWordCount: true
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 cover:
-    image: "<image path/url>"
-    alt: "<alt text>"
-    caption: "<text>"
-    relative: false
-    hidden: true
+  image: <image path/url>
+  alt: <alt text>
+  caption: <text>
+  relative: false
+  hidden: true
 editPost:
-    URL: "https://github.com/btuckerc/blog/content"
-    Text: "Suggest Changes"
-    appendFilePath: true
+  URL: https://github.com/btuckerc/blog/content
+  Text: Suggest Changes
+  appendFilePath: true
 ---
 
 # Setting up a Blog with Obsidian & Hugo

@@ -1,15 +1,24 @@
 {{- $pageurl := .Permalink }}
 {{- $title := .Title }}
+{{- $iconStyle := site.Params.shareIconStyle | default "share" }}
 
 <div class="share-button-wrapper">
     <button id="share-button" class="share-button" aria-label="Share this post">
+        {{- if eq $iconStyle "airplane" }}
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+            <path d="M21 3L14.5 21.5c-.3.8-1.5.8-1.8 0L10 14l-7-2.7c-.8-.3-.8-1.5 0-1.8L21 3z"></path>
+        </svg>
+        {{- else }}
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
             <polyline points="16 6 12 2 8 6"></polyline>
             <line x1="12" y1="2" x2="12" y2="15"></line>
         </svg>
-        &nbsp;Share
+        {{- end }}
+        <!-- &nbsp;Share -->
     </button>
 </div>
 
@@ -22,6 +31,7 @@
             try {
                 await navigator.share({
                     title: title,
+                    text: title,
                     url: url
                 });
             } catch (err) {
@@ -41,7 +51,7 @@
         if (navigator.clipboard) {
             navigator.clipboard.writeText(text)
                 .then(() => {
-                    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>&nbsp;Copied!';
+                    button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>&nbsp;Copied!';
                     setTimeout(() => {
                         button.innerHTML = originalText;
                     }, 2000);
@@ -64,7 +74,7 @@
 
         try {
             document.execCommand('copy');
-            button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>&nbsp;Copied!';
+            button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>&nbsp;Copied!';
             setTimeout(() => {
                 button.innerHTML = originalText;
             }, 2000);
