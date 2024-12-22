@@ -47,25 +47,28 @@ fi
 echo "🖼️  Checking image locations..."
 ./scripts/migrate_attachments.sh
 
-# Build the static site first while on main branch
+# Clean existing public directory
+echo "🧹 Cleaning public directory..."
+rm -rf public
+
+# Build the static site with the paper theme
 echo "🏗️  Building static site..."
-hugo --minify
+hugo -t paper --minify
 
 # Store the absolute path to the public directory
 PUBLIC_DIR="$(pwd)/public"
 
-# Create and switch to public branch
+# Create and switch to public branch (force clean)
 echo "📋 Setting up public branch..."
 if git show-ref --verify --quiet refs/heads/public; then
-    git checkout public
-    # Clean the branch but keep .git
-    git rm -rf .
-    git clean -fdx
-else
-    git checkout --orphan public
-    git rm -rf .
-    git clean -fdx
+    # Delete the local public branch
+    git branch -D public
 fi
+
+# Create a new public branch from scratch
+git checkout --orphan public
+git rm -rf .
+git clean -fdx
 
 # Copy the built site from the stored public directory
 echo "📋 Copying new content..."
