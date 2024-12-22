@@ -1,0 +1,25 @@
+.pinned-posts {
+    margin-bottom: var(--gap);
+}
+
+.post-entry.pinned {
+    border-left: 4px solid var(--primary);
+    position: relative;
+}
+
+.pin-icon {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.pin-icon svg {
+    height: 0.8em;
+    width: auto;
+}

@@ -1,0 +1,105 @@
+baseURL = "https://btuckerc.com"
+title = "btuckerc blog"
+theme = "paper"
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]  # Required for search
+
+[minify]
+disableXML = true
+minifyOutput = true
+
+[params]
+env = "production"
+title = "btuckerc blog"
+description = "Personal blog by Tucker Craig (btuckerc) covering software development, technology, and programming insights."
+keywords = ["Software Development", "Programming", "Tech Blog", "btuckerc", "Tucker Craig"]
+author = "Tucker Craig"
+DateFormat = "Jan 2, 2006 15:04 MST"
+defaultTheme = "dark"
+disableThemeToggle = true
+
+ShowReadingTime = true
+ShowShareButtons = true
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowWordCount = true
+ShowRssButtonInSectionTermList = true
+UseHugoToc = true
+
+# Share button configuration
+shareIconStyle = "airplane" # can be "airplane" or "share"
+shareIconGap = true # true for small gap, false for no gap
+
+# Search Configuration
+[params.fuseOpts]
+isCaseSensitive = false
+shouldSort = true
+location = 0
+distance = 1000
+threshold = 0.4
+minMatchCharLength = 0
+keys = ["title", "permalink", "summary", "content"]
+
+[params.assets]
+favicon = "/images/profile.jpg"
+favicon16x16 = "/images/profile.jpg"
+favicon32x32 = "/images/profile.jpg"
+apple_touch_icon = "/images/profile.jpg"
+safari_pinned_tab = "/images/profile.jpg"
+
+[params.label]
+text = "btuckerc"
+icon = "/images/profile.jpg"
+iconHeight = 35
+
+[params.homeInfoParams]
+Title = "Hi, I'm Tucker 👋"
+Content = "Software developer writing about tech, programming, and software development. Find me online @btuckerc"
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/btuckerc"
+
+[[params.socialIcons]]
+name = "x"
+url = "https://x.com/btuckerc"
+
+[[params.socialIcons]]
+name = "bluesky"
+url = "https://bsky.app/profile/btuckerc.bsky.social"
+
+[menu]
+[[menu.main]]
+identifier = "search"
+name = "Search"
+url = "/search/"
+weight = 10
+
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/Blog-Posts/"
+weight = 20
+
+[[menu.main]]
+identifier = "tags"
+name = "Tags"
+url = "/tags/"
+weight = 30
+
+[[menu.main]]
+identifier = "personal-website"
+name = "tuckercraig.com"
+url = "https://tuckercraig.com"
+weight = 40
+
+[markup]
+[markup.highlight]
+noClasses = false

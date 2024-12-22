@@ -1,0 +1,78 @@
+.share-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.share-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    color: var(--secondary);
+    background: none;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    gap: 0.3rem;
+}
+
+.share-button:hover {
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.share-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Title share button specific styles */
+.title-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.title-wrapper.no-gap {
+    gap: 0;
+}
+
+.post-title .share-button {
+    padding: 0;
+    margin: 0;
+}
+
+.post-title .share-button svg {
+    width: 35px;
+    height: 35px;
+}
+
+/* Keep the bottom share button styles */
+.share-button-wrapper .share-button {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    padding: 0.4rem 1rem;
+}
+
+/* Reduce footer spacing */
+.post-footer {
+    margin-top: 40px;
+}
+
+/* Fix the spacing between nav and footer */
+.footer {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+
+.paginav {
+    margin: 0;
+    border-radius: var(--radius);
+}
+
+/* Remove extra space between nav and footer */
+.post-footer> :last-child {
+    margin-bottom: 0;
+}
