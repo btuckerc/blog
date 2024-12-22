@@ -22,8 +22,8 @@
 {{- $width = index $parts 1 -}}
 {{- end -}}
 
-{{- $attributes := dict "src" $src "loading" "lazy" "style" "cursor: pointer;" "onclick" (printf "window.open('%s',
-'_blank')" $src) -}}
+{{- $onclick := printf "showLightbox('%s')" $src -}}
+{{- $attributes := dict "src" $src "loading" "lazy" "style" "cursor: pointer;" "onclick" $onclick -}}
 {{- if $alt -}}
 {{- $attributes = merge $attributes (dict "alt" $alt) -}}
 {{- end -}}
@@ -34,5 +34,4 @@
 {{- $attributes = merge $attributes (dict "title" (. | transform.HTMLEscape)) -}}
 {{- end -}}
 
-<img {{- range $k, $v :=$attributes -}} {{- if $v -}} {{- printf " %s=%q" $k $v | safeHTMLAttr -}} {{- end -}} {{- end
-    -}}>
+<img {{- range $k, $v :=$attributes -}}{{- if $v -}} {{- printf " %s=%q" $k $v | safeHTMLAttr -}}{{- end -}}{{- end -}}>

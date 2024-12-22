@@ -23,6 +23,7 @@ author = "Tucker Craig"
 DateFormat = "Jan 2, 2006 15:04 MST"
 defaultTheme = "dark"
 disableThemeToggle = true
+allowImageDownloads = true  # Toggle image downloads in lightbox
 
 ShowReadingTime = true
 ShowShareButtons = true
