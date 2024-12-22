@@ -47,35 +47,30 @@ fi
 echo "🖼️  Checking image locations..."
 ./scripts/migrate_attachments.sh
 
-# Remove existing public directory
-echo "🗑️  Cleaning public directory..."
-rm -rf public
-
-# Build the static site
+# Build the static site first while on main branch
 echo "🏗️  Building static site..."
 hugo --minify
+
+# Store the absolute path to the public directory
+PUBLIC_DIR="$(pwd)/public"
 
 # Create and switch to public branch
 echo "📋 Setting up public branch..."
 if git show-ref --verify --quiet refs/heads/public; then
     git checkout public
+    # Clean the branch but keep .git
+    git rm -rf .
+    git clean -fdx
 else
     git checkout --orphan public
     git rm -rf .
-    echo "# Public Branch" > README.md
-    git add README.md
-    git commit -m "Initialize public branch"
+    git clean -fdx
 fi
 
-# Remove existing content
-echo "🧹 Cleaning public branch..."
-git rm -rf .
-git clean -fdx
-
-# Copy new content
+# Copy the built site from the stored public directory
 echo "📋 Copying new content..."
-cp -r ../public/* .
-cp ../public/.* . 2>/dev/null || true
+cp -r "$PUBLIC_DIR"/* .
+cp -r "$PUBLIC_DIR"/.[!.]* . 2>/dev/null || true
 
 # Add and commit
 echo "💾 Committing changes..."
