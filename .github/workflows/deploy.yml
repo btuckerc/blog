@@ -61,6 +61,7 @@ jobs:
             # Create necessary directories
             echo "Creating directories..."
             sudo mkdir -p /opt/blog
+            sudo mkdir -p /opt/blog/public
             sudo mkdir -p /pds
             sudo mkdir -p /pds/caddy/data
             sudo mkdir -p /pds/caddy/etc/caddy
@@ -85,26 +86,30 @@ jobs:
             LOG_ENABLED=true
             EOF
 
-            # Clone/update the repository
-            cd /opt/blog || exit 1
-
-            # Backup current deployment
-            if [ -d ".git" ]; then
-              echo "Backing up current deployment..."
-              git stash || true  # Save any local changes
+            # Clone/update the main repository for configuration
+            echo "Setting up main repository..."
+            cd /opt/blog
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/btuckerc/Blog.git .
+              git checkout main
+            else
+              git fetch origin main
+              git checkout main
+              git reset --hard origin/main
             fi
 
-            # Update or clone repository
-            if [ -d ".git" ]; then
-              echo "Updating existing repository..."
+            # Clone/update the public branch for static files
+            echo "Setting up public files..."
+            cd /opt/blog/public
+            if [ ! -d ".git" ]; then
+              git clone -b public https://github.com/btuckerc/Blog.git .
+            else
               git fetch origin public
               git reset --hard origin/public
-            else
-              echo "Cloning repository..."
-              git clone --branch public https://github.com/btuckerc/Blog.git .
             fi
 
-            # Pull and start services
+            # Start services
+            cd /opt/blog
             if [ -f "docker-compose.yml" ]; then
               echo "Starting Docker services..."
               sudo docker-compose pull
