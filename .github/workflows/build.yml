@@ -27,7 +27,7 @@ jobs:
           extended: true
 
       - name: Build
-        run: hugo -t paper --minify--baseURL "$HUGO_BASEURL"
+        run: hugo -t paper --minify --baseURL "$HUGO_BASEURL"
 
       - name: Update public branch
         run: |
