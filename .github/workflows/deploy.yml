@@ -137,18 +137,34 @@ jobs:
                 worker_connections 1024;
             }
             http {
+                include /etc/nginx/mime.types;
                 server {
                     listen 80;
                     server_name ${PDS_HOSTNAME};
+                    root /var/www/html;
+
+                    location /.well-known/acme-challenge/ {
+                        root /var/www/html;
+                        try_files \$uri =404;
+                    }
+
                     location / {
                         return 200 'OK';
                     }
                 }
             }
             EOF
-              # Start temporary nginx and get certificates
+              # Create webroot directory
+              sudo mkdir -p /var/www/html/.well-known/acme-challenge
+              sudo chown -R www-data:www-data /var/www/html
+
+              # Start temporary nginx
               sudo nginx -c /tmp/nginx-temp.conf
-              sudo certbot --nginx -d ${PDS_HOSTNAME} --non-interactive --agree-tos --email tucker@btuckerc.com
+
+              # Get certificate using webroot method
+              sudo certbot certonly --webroot -w /var/www/html -d ${PDS_HOSTNAME} --non-interactive --agree-tos --email tucker@btuckerc.com
+
+              # Stop nginx and cleanup
               sudo nginx -s stop
               sudo rm /tmp/nginx-temp.conf
             fi
