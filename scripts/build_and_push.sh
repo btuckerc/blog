@@ -50,7 +50,16 @@ echo -e "${BLUE}│${NC}      Blog Build and Push Tool       ${BLUE}│${NC}"
 echo -e "${BLUE}└────────────────────────────────────┘${NC}"
 echo
 
-# Step 1: Remove existing public directory
+# Step 1: Run migrate_attachments.sh
+print_step "Running attachment migration..."
+if ./scripts/migrate_attachments.sh; then
+    print_success "Attachment migration completed"
+else
+    print_error "Attachment migration failed"
+    exit 1
+fi
+
+# Step 2: Remove existing public directory
 print_step "Removing existing public directory..."
 if [ -d "public" ]; then
     rm -rf public
@@ -59,7 +68,7 @@ else
     print_warning "No existing public directory found"
 fi
 
-# Step 2: Generate new site
+# Step 3: Generate new site
 print_step "Generating new site with Hugo..."
 if hugo -t paper; then
     print_success "Site generated successfully"
@@ -68,20 +77,35 @@ else
     exit 1
 fi
 
-# Step 3: Git status check
+# Step 4: Git status check
 print_step "Checking git status..."
 git status
 
-# Step 4: Ask for confirmation
+# Check if only public directory has changes
+only_public_changes=true
+while IFS= read -r line; do
+    if [[ "$line" =~ ^[[:space:]]*[MADRCU] && ! "$line" =~ ^[[:space:]]*[MADRCU][[:space:]]public/ ]]; then
+        only_public_changes=false
+        break
+    fi
+done < <(git status --porcelain)
+
+# Step 5: Ask for confirmation
 echo
 read -p "$(echo -e ${BLUE}?${NC}) Would you like to commit these changes? [y/N] " response
 if [[ "$response" =~ ^[Yy]$ ]]; then
+    # Set default commit message based on changes
+    default_message="update public [script]"
+    if ! $only_public_changes; then
+        default_message="Update site content and rebuild"
+    fi
+
     # Get commit message
     echo
-    read -p "$(echo -e ${BLUE}?${NC}) Enter commit message: " commit_message
+    read -p "$(echo -e ${BLUE}?${NC}) Enter commit message (default: $default_message): " commit_message
 
     if [ -z "$commit_message" ]; then
-        commit_message="Update site content and rebuild"
+        commit_message="$default_message"
     fi
 
     # Add and commit changes
