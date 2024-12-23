@@ -28,7 +28,7 @@ jobs:
           hugo-version: 'latest'
           extended: true
 
-      - name: Clean public directory
+      - name: Clean and prepare directories
         run: |
           rm -rf public
           mkdir -p content/Blog-Attachments
@@ -50,20 +50,22 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
+          # Save the current public directory
+          mv public public_temp
+
           # Create/switch to public branch
           git checkout public 2>/dev/null || git checkout -b public
 
           # Clear existing contents
-          git rm -rf .
+          git rm -rf . || true
 
-          # Copy contents from main branch's public directory
-          git checkout main -- public/
+          # Move the built content back
+          mv public_temp/* .
+          rm -rf public_temp
 
-          # Move contents to root
-          mv public/* .
-          rm -rf public/
+          # Add all content
+          git add .
 
           # Commit and push
-          git add .
-          git commit -m "Update public branch from main branch public directory" || echo "No changes to commit"
+          git commit -m "Update public branch with latest build" || echo "No changes to commit"
           git push origin public -f
