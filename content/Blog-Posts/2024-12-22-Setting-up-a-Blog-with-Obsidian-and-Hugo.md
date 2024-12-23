@@ -17,7 +17,7 @@ categories:
 pinned: true
 weight: 0
 showToc: true
-TocOpen: true
+TocOpen: false
 draft: false
 hidemeta: false
 comments: false
@@ -25,14 +25,14 @@ searchHidden: false
 ShowReadingTime: true
 ShowBreadCrumbs: true
 ShowPostNavLinks: true
-ShowWordCount: true
+ShowWordCount: false
 ShowRssButtonInSectionTermList: true
 UseHugoToc: true
 ShowEditButton: true
 cover:
-  image:
-  alt: "Blog Setup Overview"
-  caption: "Setting up a modern blog with Hugo, Obsidian, and Bluesky"
+  image: 
+  alt: Blog Setup Overview
+  caption: Setting up a modern blog with Hugo, Obsidian, and Bluesky
   relative: true
   hidden: true
 editPost:
