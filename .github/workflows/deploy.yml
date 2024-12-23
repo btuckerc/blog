@@ -61,7 +61,6 @@ jobs:
             # Create necessary directories
             echo "Creating directories..."
             sudo mkdir -p /opt/blog
-            sudo mkdir -p /opt/blog/public
             sudo mkdir -p /pds
             sudo mkdir -p /pds/caddy/data
             sudo mkdir -p /pds/caddy/etc/caddy
@@ -98,14 +97,20 @@ jobs:
               git reset --hard origin/main
             fi
 
-            # Clone/update the public branch for static files
+            # Set up public directory
             echo "Setting up public files..."
-            cd /opt/blog/public
-            if [ ! -d ".git" ]; then
-              git clone -b public https://github.com/btuckerc/Blog.git .
+            if [ -d "public" ]; then
+              cd public
+              if [ -d ".git" ]; then
+                git fetch origin public
+                git reset --hard origin/public
+              else
+                cd ..
+                rm -rf public
+                git clone -b public https://github.com/btuckerc/Blog.git public
+              fi
             else
-              git fetch origin public
-              git reset --hard origin/public
+              git clone -b public https://github.com/btuckerc/Blog.git public
             fi
 
             # Start services
