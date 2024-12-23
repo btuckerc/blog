@@ -28,6 +28,17 @@ jobs:
           hugo-version: 'latest'
           extended: true
 
+      - name: Clean public directory
+        run: |
+          rm -rf public
+          mkdir -p content/Blog-Attachments
+          mkdir -p public/blog-posts/Blog-Attachments
+
+      - name: Process attachments
+        run: |
+          chmod +x ./scripts/migrate_attachments.sh
+          ATTACHMENTS_DIR="./content/Blog-Attachments" ./scripts/migrate_attachments.sh
+
       - name: Build
         run: |
           echo "Building with base URL: $HUGO_BASEURL"
@@ -47,8 +58,6 @@ jobs:
 
           # Copy contents from main branch's public directory
           git checkout main -- public/
-
-          ./scripts/migrate_attachments.sh
 
           # Move contents to root
           mv public/* .
