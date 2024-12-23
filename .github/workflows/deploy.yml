@@ -22,12 +22,12 @@ jobs:
           PDS_HOSTNAME: ${{ secrets.PDS_HOSTNAME }}
           PDS_JWT_SECRET: ${{ secrets.PDS_JWT_SECRET }}
           PDS_ADMIN_PASSWORD: ${{ secrets.PDS_ADMIN_PASSWORD }}
-          PDS_PLC_ROTATION_KEY: ${{ secrets.PDS_PLC_ROTATION_KEY }}
+          PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX: ${{ secrets.PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX }}
         with:
           host: ${{ secrets.DROPLET_IP }}
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: PDS_HOSTNAME,PDS_JWT_SECRET,PDS_ADMIN_PASSWORD,PDS_PLC_ROTATION_KEY
+          envs: PDS_HOSTNAME,PDS_JWT_SECRET,PDS_ADMIN_PASSWORD,PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX
           script: |
             set -e  # Exit on any error
 
@@ -82,7 +82,7 @@ jobs:
             PDS_HOSTNAME=${PDS_HOSTNAME}
             PDS_JWT_SECRET=${PDS_JWT_SECRET}
             PDS_ADMIN_PASSWORD=${PDS_ADMIN_PASSWORD}
-            PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX=${PDS_PLC_ROTATION_KEY}
+            PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX=${PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX}
             PDS_DATA_DIRECTORY=/pds
             PDS_BLOBSTORE_DISK_LOCATION=/pds/blocks
             PDS_BLOB_UPLOAD_LIMIT=52428800
