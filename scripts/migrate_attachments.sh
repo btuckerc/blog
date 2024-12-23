@@ -30,12 +30,15 @@ find "content/Blog-Posts" -name "*.md" 2>/dev/null | while read -r post; do
 
         # Handle the image
         if [[ -f "$ATTACHMENTS_DIR/$image_name" ]]; then
+            # Copy to content directory for Obsidian
             cp "$ATTACHMENTS_DIR/$image_name" "$BLOG_ATTACHMENTS/$image_name" 2>/dev/null
+            # Copy to public directory for web
             cp "$ATTACHMENTS_DIR/$image_name" "$PUBLIC_ATTACHMENTS/$image_name" 2>/dev/null
             echo "  ↳ Copied: $image_name"
 
-            # Convert to standard markdown format
+            # Convert to standard markdown format with web-friendly path
             escaped_image_ref=$(echo "$image_ref" | sed 's/[[\/*]/\\&/g' 2>/dev/null)
+            # Use relative path for Obsidian compatibility
             new_ref="![](../Blog-Attachments/$image_name)"
             sed -i.bak "s|$escaped_image_ref|$new_ref|g" "$post" 2>/dev/null
         else
@@ -71,13 +74,20 @@ echo "Verifying directory structure..."
 ls -la "content/Blog-Attachments"
 ls -la "public/blog-posts/Blog-Attachments"
 
-# Ensure no wrong directory exists
+# Move any files from incorrect location and clean up
 if [ -d "public/Blog-Attachments" ]; then
-    echo "Found incorrect public/Blog-Attachments directory, moving files..."
+    echo "Found files in incorrect location (public/Blog-Attachments), moving them..."
     mkdir -p "public/blog-posts/Blog-Attachments"
     mv public/Blog-Attachments/* "public/blog-posts/Blog-Attachments/" 2>/dev/null || true
     rm -rf "public/Blog-Attachments"
     echo "Files moved to correct location"
 fi
+
+# Final verification
+echo "Final directory structure:"
+echo "Content attachments:"
+ls -la "content/Blog-Attachments"
+echo "Public attachments:"
+ls -la "public/blog-posts/Blog-Attachments"
 
 echo "Attachment migration complete!"

@@ -34,15 +34,36 @@ jobs:
           mkdir -p content/Blog-Attachments
           mkdir -p public/blog-posts/Blog-Attachments
 
+      - name: Copy attachments to content directory
+        run: |
+          # First, copy any existing attachments from the repo
+          if [ -d "static/images" ]; then
+            cp -r static/images/* content/Blog-Attachments/ || true
+          fi
+
       - name: Process attachments
         run: |
           chmod +x ./scripts/migrate_attachments.sh
-          ATTACHMENTS_DIR="./content/Blog-Attachments" ./scripts/migrate_attachments.sh
+          # Use the content directory itself as the source
+          ATTACHMENTS_DIR="$(pwd)/content/Blog-Attachments" ./scripts/migrate_attachments.sh
 
       - name: Build
         run: |
           echo "Building with base URL: $HUGO_BASEURL"
           hugo -t paper --minify --baseURL "$HUGO_BASEURL" --gc --cleanDestinationDir --environment production
+
+      - name: Verify attachments after build
+        run: |
+          echo "Checking attachment directories after build:"
+          ls -la content/Blog-Attachments || true
+          ls -la public/blog-posts/Blog-Attachments || true
+
+          # If attachments ended up in the wrong place, move them
+          if [ -d "public/Blog-Attachments" ]; then
+            echo "Moving attachments to correct location..."
+            mv public/Blog-Attachments/* public/blog-posts/Blog-Attachments/ || true
+            rm -rf public/Blog-Attachments
+          fi
 
       - name: Update public branch
         run: |
