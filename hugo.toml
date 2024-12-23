@@ -1,6 +1,10 @@
 baseURL = "https://btuckerc.com/"
 title = "btuckerc blog"
 theme = "paper"
+languageCode = "en-us"
+
+# Disable live reload in production
+disableLiveReload = true
 
 enableRobotsTXT = true
 buildDrafts = false

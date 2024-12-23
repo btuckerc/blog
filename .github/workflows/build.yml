@@ -12,7 +12,9 @@ jobs:
   build-and-update-public:
     runs-on: ubuntu-latest
     env:
-      HUGO_BASEURL: https://btuckerc.com/
+      HUGO_BASEURL: https://btuckerc.com
+      HUGO_ENV: production
+      HUGO_ENABLEGITINFO: true
     steps:
       - name: Checkout main
         uses: actions/checkout@v4
@@ -27,7 +29,9 @@ jobs:
           extended: true
 
       - name: Build
-        run: hugo -t paper --minify --baseURL "$HUGO_BASEURL"
+        run: |
+          echo "Building with base URL: $HUGO_BASEURL"
+          hugo -t paper --minify --baseURL "$HUGO_BASEURL" --gc --cleanDestinationDir --environment production
 
       - name: Update public branch
         run: |
