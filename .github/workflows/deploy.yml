@@ -33,9 +33,31 @@ jobs:
 
             echo "Starting deployment..."
 
+            # Install Docker and dependencies if not present
+            if ! command -v docker &> /dev/null; then
+              echo "Installing Docker and dependencies..."
+              sudo apt update
+              sudo apt install -y docker.io docker-compose-plugin nginx certbot python3-certbot-nginx
+              sudo systemctl start docker
+              sudo systemctl enable docker
+            fi
+
+            # Verify Docker is running
+            if ! systemctl is-active --quiet docker; then
+              echo "Starting Docker service..."
+              sudo systemctl start docker
+            fi
+
+            # Create necessary directories
+            echo "Creating directories..."
+            sudo mkdir -p /opt/blog
+            sudo mkdir -p /pds
+            sudo mkdir -p /pds/caddy/data
+            sudo mkdir -p /pds/caddy/etc/caddy
+            sudo mkdir -p /pds/blocks
+
             # Create PDS environment file
             echo "Setting up PDS environment..."
-            sudo mkdir -p /pds
             cat << EOF | sudo tee /pds/pds.env
             PDS_HOSTNAME=${PDS_HOSTNAME}
             PDS_JWT_SECRET=${PDS_JWT_SECRET}
@@ -54,10 +76,11 @@ jobs:
             EOF
 
             # Clone/update the repository
-            cd /opt/blog
+            cd /opt/blog || exit 1
 
             # Backup current deployment
             if [ -d ".git" ]; then
+              echo "Backing up current deployment..."
               git stash || true  # Save any local changes
             fi
 
@@ -71,18 +94,37 @@ jobs:
               git clone --branch public https://github.com/btuckerc/Blog.git .
             fi
 
-            # Update services if docker-compose.yml exists
+            # Pull and start services
             if [ -f "docker-compose.yml" ]; then
-              echo "Updating Docker services..."
+              echo "Starting Docker services..."
               sudo docker compose pull
               sudo docker compose down || true  # Don't fail if services weren't running
               sudo docker compose up -d
+
+              # Verify services are running
+              echo "Verifying services..."
+              if ! sudo docker ps | grep -q "pds"; then
+                echo "Error: PDS service failed to start"
+                sudo docker logs pds
+                exit 1
+              fi
+
+              if ! sudo docker ps | grep -q "nginx"; then
+                echo "Error: Nginx service failed to start"
+                sudo docker logs nginx
+                exit 1
+              fi
+            else
+              echo "Error: docker-compose.yml not found"
+              exit 1
             fi
 
-            # Reload nginx if config changed
-            if [ -f "nginx.conf" ]; then
-              echo "Reloading Nginx configuration..."
-              sudo docker exec nginx nginx -t && sudo docker exec nginx nginx -s reload
+            # Set up SSL if not already configured
+            if [ ! -f "/etc/letsencrypt/live/${PDS_HOSTNAME}/fullchain.pem" ]; then
+              echo "Setting up SSL certificates..."
+              sudo certbot --nginx -d ${PDS_HOSTNAME} --non-interactive --agree-tos --email tucker@btuckerc.com
             fi
 
             echo "Deployment completed successfully!"
+            echo "Running services:"
+            sudo docker ps
