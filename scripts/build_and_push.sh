@@ -70,7 +70,7 @@ fi
 
 # Step 3: Generate new site
 print_step "Generating new site with Hugo..."
-if hugo -t paper; then
+if hugo -t paper --baseURL "https://btuckerc.github.io/Blog/"; then
     print_success "Site generated successfully"
 else
     print_error "Failed to generate site"

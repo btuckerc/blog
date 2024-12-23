@@ -45,4 +45,4 @@ fi
 print_step "Starting Hugo server..."
 echo -e "${YELLOW}Press Ctrl+C to stop the server${NC}"
 echo
-hugo server -t paper
+hugo server -t paper --baseURL http://localhost:1313/
