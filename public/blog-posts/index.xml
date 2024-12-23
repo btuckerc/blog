@@ -6,21 +6,21 @@
     <description>Recent content in Blog-Posts on btuckerc blog</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 22 Dec 2024 16:08:14 -0500</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2024 19:32:25 -0500</lastBuildDate>
     <atom:link href="http://localhost:1313/blog-posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sharing my dev settings</title>
+      <link>http://localhost:1313/blog-posts/2024-12-22-sharing-my-dev-settings/</link>
+      <pubDate>Sun, 22 Dec 2024 19:32:41 -0500</pubDate>
+      <guid>http://localhost:1313/blog-posts/2024-12-22-sharing-my-dev-settings/</guid>
+      <description>This post explores sharing my dev settings, discussing key concepts and practical applications.</description>
+    </item>
     <item>
       <title>Setting up a Blog with Obsidian and Hugo</title>
       <link>http://localhost:1313/blog-posts/2024-12-22-setting-up-a-blog-with-obsidian-and-hugo/</link>
       <pubDate>Sun, 22 Dec 2024 16:08:23 -0500</pubDate>
       <guid>http://localhost:1313/blog-posts/2024-12-22-setting-up-a-blog-with-obsidian-and-hugo/</guid>
       <description>This post explores setting up a Blog with Obsidian and Hugo, discussing key concepts and practical applications.</description>
-    </item>
-    <item>
-      <title>Setting up a Blog with Obsidian &amp; Hugo</title>
-      <link>http://localhost:1313/blog-posts/2024-12-22-setting-up-a-blog-with-obsidian--hugo/</link>
-      <pubDate>Sun, 22 Dec 2024 15:33:29 -0500</pubDate>
-      <guid>http://localhost:1313/blog-posts/2024-12-22-setting-up-a-blog-with-obsidian--hugo/</guid>
-      <description>This post explores setting up a Blog with Obsidian &amp;amp; Hugo, discussing key concepts and practical applications.</description>
     </item>
   </channel>
 </rss>

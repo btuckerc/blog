@@ -41,9 +41,6 @@ This post explores setting up a Blog with Obsidian & Hugo, discussing key concep
 
 ![|200](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-1.png)
 
-
-![](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-2.png)
-
 # Setting Up the Vault
 
 ```bash
