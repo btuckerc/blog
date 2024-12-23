@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on btuckerc blog</title>
+    <link>https://btuckerc.com/tags/</link>
+    <description>Recent content in Tags on btuckerc blog</description>
+    <generator>Hugo -- 0.140.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 23 Dec 2024 12:44:08 -0500</lastBuildDate>
+    <atom:link href="https://btuckerc.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Blog</title>
+      <link>https://btuckerc.com/tags/blog/</link>
+      <pubDate>Sun, 22 Dec 2024 19:32:41 -0500</pubDate>
+      <guid>https://btuckerc.com/tags/blog/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Bluesky</title>
+      <link>https://btuckerc.com/tags/bluesky/</link>
+      <pubDate>Sun, 22 Dec 2024 16:08:23 -0500</pubDate>
+      <guid>https://btuckerc.com/tags/bluesky/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Devops</title>
+      <link>https://btuckerc.com/tags/devops/</link>
+      <pubDate>Sun, 22 Dec 2024 16:08:23 -0500</pubDate>
+      <guid>https://btuckerc.com/tags/devops/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hugo</title>
+      <link>https://btuckerc.com/tags/hugo/</link>
+      <pubDate>Sun, 22 Dec 2024 16:08:23 -0500</pubDate>
+      <guid>https://btuckerc.com/tags/hugo/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Obsidian</title>
+      <link>https://btuckerc.com/tags/obsidian/</link>
+      <pubDate>Sun, 22 Dec 2024 16:08:23 -0500</pubDate>
+      <guid>https://btuckerc.com/tags/obsidian/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

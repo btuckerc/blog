@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Devops on btuckerc blog</title>
+    <link>https://btuckerc.com/tags/devops/</link>
+    <description>Recent content in Devops on btuckerc blog</description>
+    <generator>Hugo -- 0.140.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 23 Dec 2024 12:44:08 -0500</lastBuildDate>
+    <atom:link href="https://btuckerc.com/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Setting up a Blog with Obsidian and Hugo</title>
+      <link>https://btuckerc.com/blog-posts/2024-12-22-setting-up-a-blog-with-obsidian-and-hugo/</link>
+      <pubDate>Sun, 22 Dec 2024 16:08:23 -0500</pubDate>
+      <guid>https://btuckerc.com/blog-posts/2024-12-22-setting-up-a-blog-with-obsidian-and-hugo/</guid>
+      <description>A comprehensive guide to setting up a modern blog using Hugo, Obsidian, DigitalOcean, and Bluesky PDS integration.</description>
+    </item>
+  </channel>
+</rss>

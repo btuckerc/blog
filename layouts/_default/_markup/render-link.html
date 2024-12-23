@@ -1,6 +1,0 @@
-{{- $link := .Destination -}}
-{{- $isRemote := strings.HasPrefix $link "http" -}}
-{{- $isAnchor := strings.HasPrefix $link "#" -}}
-
-<a href="{{ $link }}" {{- with .Title }} title="{{ . }}" {{ end -}} {{- if and $isRemote (not $isAnchor) }}
-    target="_blank" rel="noopener noreferrer" {{ end -}}>{{ .Text }}</a>
