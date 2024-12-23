@@ -7,6 +7,10 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# Environment variables with defaults
+HUGO_BASEURL=${HUGO_BASEURL:-"http://localhost:1313/"}
+HUGO_THEME=${HUGO_THEME:-"paper"}
+
 # Function to print styled messages
 print_step() {
     echo -e "${BLUE}=>${NC} $1"
@@ -43,6 +47,7 @@ fi
 
 # Step 2: Start Hugo server
 print_step "Starting Hugo server..."
+print_step "Using base URL: ${HUGO_BASEURL}"
 echo -e "${YELLOW}Press Ctrl+C to stop the server${NC}"
 echo
-hugo server -t paper --baseURL http://localhost:1313/
+hugo server -t ${HUGO_THEME} --baseURL "${HUGO_BASEURL}"

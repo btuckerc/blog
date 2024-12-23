@@ -7,6 +7,10 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# Environment variables with defaults
+HUGO_BASEURL=${HUGO_BASEURL:-"https://btuckerc.com/"}
+HUGO_THEME=${HUGO_THEME:-"paper"}
+
 # Function to print styled messages
 print_step() {
     echo -e "${BLUE}=>${NC} $1"
@@ -70,7 +74,8 @@ fi
 
 # Step 3: Generate new site
 print_step "Generating new site with Hugo..."
-if hugo -t paper --baseURL "https://btuckerc.github.io/Blog/"; then
+print_step "Using base URL: ${HUGO_BASEURL}"
+if hugo -t ${HUGO_THEME} --baseURL "${HUGO_BASEURL}"; then
     print_success "Site generated successfully"
 else
     print_error "Failed to generate site"
@@ -119,7 +124,7 @@ if [[ "$response" =~ ^[Yy]$ ]]; then
             if git push origin main; then
                 print_success "Changes pushed to main successfully"
                 echo
-                echo -e "${GREEN}┌────────────────────────────────────┐${NC}"
+                echo -e "${GREEN}┌───────────────────────────��────────┐${NC}"
                 echo -e "${GREEN}│${NC}    All operations completed successfully ${GREEN}│${NC}"
                 echo -e "${GREEN}└────────────────────────────────────┘${NC}"
             else

@@ -10,7 +10,7 @@ tags:
 categories:
   - blog
   - getting-started
-pinned: true
+pinned: false
 weight: 0
 showToc: true
 TocOpen: false
