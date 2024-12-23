@@ -48,11 +48,14 @@ This post outlines how I built a blog that leverages Hugo for static site genera
 
 ---
 
+## Part 0: Why?
+
+I've been trying to revamp a lot of how I'm interfacing with my laptop. I've been getting into using Obsidian, with all it's linking and tagging, and thought it might be nice to have some kind of "blog" where I can drag and drop info from my Obsidian right into the blog. I have also had the thought for a while: what if I didn't have to deal with formatting and could just push Markdown files to handle formatting for me. I was watching an NVIM user's video recently (probably primeagen or Teej) and heard mention of Hugo. So I got to work:
 ## Part 1: Local Setup
 
 ### Creating the Hugo Site
 
-To begin, install and configure Hugo on your local machine. Below is an example on macOS using Homebrew:
+To begin, I installed and configured Hugo on my Mac. I used Homebrew:
 
 ```bash
 # Install Hugo on macOS
@@ -77,7 +80,7 @@ mkdir -p static/images
 
 ### Setting Up Obsidian Integration
 
-I prefer writing posts in Obsidian. To keep everything in sync, I created symbolic links (`symlinks`) from my local Hugo content directories to my Obsidian vault:
+I prefer writing posts in Obsidian, even if a normal `.md` file can be served. To keep everything in sync, I created symbolic links (`symlinks`) from my local Hugo content directories to my Obsidian vault:
 
 ```bash
 # Adjust paths to match your own system layout
@@ -87,7 +90,9 @@ ln -sf /Users/tucker/Documents/GitHub/Blog/content/Blog-Attachments ~/Documents/
 
 With these symlinks, any changes I make in Obsidian are automatically reflected in my Hugo content folder.
 
-![](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-4.png)
+I also set up a `templater` to handle all different parameters with individual posts:
+
+![|500](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-14.png)
 
 ---
 
@@ -95,7 +100,7 @@ With these symlinks, any changes I make in Obsidian are automatically reflected 
 
 ### Creating a DigitalOcean Droplet
 
-To host the site, I use a DigitalOcean droplet. Once you’ve created your droplet, SSH into it to set up the necessary directories:
+To host the site, I set up a DigitalOcean droplet. I was already kinda grandfathered in from having my OG-bsky atproto serving from there. I had to SSH into it to set up the necessary directories:
 
 ```bash
 # SSH into your new droplet
