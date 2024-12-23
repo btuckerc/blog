@@ -49,15 +49,15 @@ minMatchCharLength = 0
 keys = ["title", "permalink", "summary", "content"]
 
 [params.assets]
-favicon = "/images/profile.jpg"
-favicon16x16 = "/images/profile.jpg"
-favicon32x32 = "/images/profile.jpg"
-apple_touch_icon = "/images/profile.jpg"
-safari_pinned_tab = "/images/profile.jpg"
+favicon = "images/profile.jpg"
+favicon16x16 = "images/profile.jpg"
+favicon32x32 = "images/profile.jpg"
+apple_touch_icon = "images/profile.jpg"
+safari_pinned_tab = "images/profile.jpg"
 
 [params.label]
 text = "btuckerc"
-icon = "/images/profile.jpg"
+icon = "images/profile.jpg"
 iconHeight = 35
 
 [params.homeInfoParams]
