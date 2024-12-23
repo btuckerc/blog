@@ -41,28 +41,38 @@ jobs:
             cp -r static/images/* content/Blog-Attachments/ || true
           fi
 
+      - name: Build Hugo site
+        run: |
+          echo "Building with base URL: $HUGO_BASEURL"
+          hugo -t paper --minify --baseURL "$HUGO_BASEURL" --gc --environment production
+
       - name: Process attachments
         run: |
           chmod +x ./scripts/migrate_attachments.sh
           # Use the content directory itself as the source
           ATTACHMENTS_DIR="$(pwd)/content/Blog-Attachments" ./scripts/migrate_attachments.sh
 
-      - name: Build
+      - name: Verify attachments
         run: |
-          echo "Building with base URL: $HUGO_BASEURL"
-          hugo -t paper --minify --baseURL "$HUGO_BASEURL" --gc --cleanDestinationDir --environment production
-
-      - name: Verify attachments after build
-        run: |
-          echo "Checking attachment directories after build:"
+          echo "Checking attachment directories:"
+          echo "Content attachments:"
           ls -la content/Blog-Attachments || true
+          echo "Public attachments:"
           ls -la public/blog-posts/Blog-Attachments || true
 
           # If attachments ended up in the wrong place, move them
           if [ -d "public/Blog-Attachments" ]; then
             echo "Moving attachments to correct location..."
+            mkdir -p public/blog-posts/Blog-Attachments
             mv public/Blog-Attachments/* public/blog-posts/Blog-Attachments/ || true
             rm -rf public/Blog-Attachments
+          fi
+
+          # Ensure the Blog-Attachments directory exists and has content
+          if [ ! -d "public/blog-posts/Blog-Attachments" ] || [ -z "$(ls -A public/blog-posts/Blog-Attachments)" ]; then
+            echo "Copying attachments to public directory..."
+            mkdir -p public/blog-posts/Blog-Attachments
+            cp -r content/Blog-Attachments/* public/blog-posts/Blog-Attachments/ || true
           fi
 
       - name: Update public branch
