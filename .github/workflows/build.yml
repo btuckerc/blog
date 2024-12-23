@@ -48,6 +48,8 @@ jobs:
           # Copy contents from main branch's public directory
           git checkout main -- public/
 
+          ./scripts/migrate_attachments.sh
+
           # Move contents to root
           mv public/* .
           rm -rf public/

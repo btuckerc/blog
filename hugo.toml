@@ -1,11 +1,9 @@
-baseURL = "https://btuckerc.com"
+baseURL = "https://btuckerc.com/"
 title = "btuckerc blog"
 theme = "paper"
 languageCode = "en-us"
 
-# Environment settings
-environment = "production"
-IsProduction = true
+# Disable live reload in production
 disableLiveReload = true
 
 enableRobotsTXT = true
