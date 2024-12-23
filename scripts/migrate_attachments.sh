@@ -73,8 +73,11 @@ ls -la "public/blog-posts/Blog-Attachments"
 
 # Ensure no wrong directory exists
 if [ -d "public/Blog-Attachments" ]; then
-    echo "Removing incorrect public/Blog-Attachments directory"
+    echo "Found incorrect public/Blog-Attachments directory, moving files..."
+    mkdir -p "public/blog-posts/Blog-Attachments"
+    mv public/Blog-Attachments/* "public/blog-posts/Blog-Attachments/" 2>/dev/null || true
     rm -rf "public/Blog-Attachments"
+    echo "Files moved to correct location"
 fi
 
 echo "Attachment migration complete!"
