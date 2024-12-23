@@ -131,10 +131,26 @@ jobs:
             # Set up SSL if not already configured
             if [ ! -f "/etc/letsencrypt/live/${PDS_HOSTNAME}/fullchain.pem" ]; then
               echo "Setting up SSL certificates..."
-              # Start a temporary nginx for certbot
-              sudo nginx -c /opt/blog/nginx.conf
+              # Create a temporary nginx configuration for certbot
+              cat << EOF | sudo tee /tmp/nginx-temp.conf
+            events {
+                worker_connections 1024;
+            }
+            http {
+                server {
+                    listen 80;
+                    server_name ${PDS_HOSTNAME};
+                    location / {
+                        return 200 'OK';
+                    }
+                }
+            }
+            EOF
+              # Start temporary nginx and get certificates
+              sudo nginx -c /tmp/nginx-temp.conf
               sudo certbot --nginx -d ${PDS_HOSTNAME} --non-interactive --agree-tos --email tucker@btuckerc.com
               sudo nginx -s stop
+              sudo rm /tmp/nginx-temp.conf
             fi
 
             # Start services
