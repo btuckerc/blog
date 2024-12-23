@@ -10,6 +10,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./public:/usr/share/nginx/html:ro
       - /pds/caddy/data:/pds/caddy/data
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - pds
     restart: unless-stopped
