@@ -7,7 +7,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
   deployments: write
@@ -18,14 +18,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-update-public:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          submodules: true  # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+          submodules: true
+          fetch-depth: 0
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -36,18 +36,50 @@ jobs:
       - name: Build
         run: hugo --minify --baseURL "https://btuckerc.github.io/Blog/"
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: './public'
+      - name: Update public branch
+        run: |
+          # Configure Git
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Create/switch to public branch
+          git checkout public 2>/dev/null || git checkout -b public
+
+          # Clear existing contents
+          git rm -rf .
+
+          # Copy contents from main branch's public directory
+          git checkout main -- public/
+
+          # Move contents to root
+          mv public/* .
+          rm -rf public/
+
+          # Commit and push
+          git add .
+          git commit -m "Update public branch from main branch public directory" || echo "No changes to commit"
+          git push origin public -f
 
   deploy:
-    needs: build
+    needs: build-and-update-public
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Checkout public branch
+        uses: actions/checkout@v4
+        with:
+          ref: public
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
