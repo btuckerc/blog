@@ -40,11 +40,11 @@ editPost:
   Text: Suggest Changes
   appendFilePath: true
 ---
-# The Journey to a Modern Blog
+# I can take notes, why not blog!
 
 This post outlines how I built a blog that leverages Hugo for static site generation and Obsidian for note-taking. On top of that, I deployed everything to a DigitalOcean droplet and integrated the site with my own Bluesky PDS.
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-3.png]]
+![|500](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-3.png)
 
 ---
 
@@ -87,7 +87,7 @@ ln -sf /Users/tucker/Documents/GitHub/Blog/content/Blog-Attachments ~/Documents/
 
 With these symlinks, any changes I make in Obsidian are automatically reflected in my Hugo content folder.
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-4.png]]
+![](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-4.png)
 
 ---
 
@@ -105,7 +105,7 @@ ssh -i ~/.ssh/btuckerc-do_nok root@DROPLET_IP
 mkdir -p /opt/blog
 ```
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-5.png]]
+![](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-5.png)
 
 ### Setting Up GitHub Actions
 
@@ -158,7 +158,7 @@ To automate building and deploying, I rely on GitHub Actions. In your repository
     ```
 
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-6.png]]
+![](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-6.png)
 
 ---
 
@@ -181,7 +181,7 @@ services:
       # ... more environment variables
 ```
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-7.png]]
+![|300](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-7.png)
 
 ### Nginx Configuration
 
@@ -223,7 +223,7 @@ In your GitHub repository, set up these secrets to ensure secure deployments and
 - `PDS_ADMIN_PASSWORD`
 - `PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX`
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-8.png]]
+![](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-8.png)
 
 ### Automatic Image Processing
 
@@ -244,7 +244,7 @@ For Obsidian-style image links, I wrote a simple script (`migrate_attachments.sh
 
 One of the key aspects of personalizing my blog was implementing custom layouts to overwrite the default files from the theme. This allowed me to tailor the appearance and functionality to better suit my needs. By creating custom layout files in the `layouts` directory, I was able to override the theme's default templates and have my own little touches on format and styling.
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-9.png]]
+![|250](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-9.png)
 
 ---
 
@@ -254,7 +254,7 @@ One of the key aspects of personalizing my blog was implementing custom layouts 
 
 I had fun re-implementing the search functionality in the `assets` directory. This involved customizing the JavaScript and CSS to enhance the search experience on my blog. I wanted users to be able to query for a word and have the results highlighted, with a few rows of content displayed before and after each result. This made it easier for users to find relevant information quickly and efficiently.
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-10.png]]
+![](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-10.png)
 
 ---
 
@@ -264,8 +264,7 @@ I had fun re-implementing the search functionality in the `assets` directory. Th
 
 To improve user interaction, I implemented my own copy/share functionality on blog posts. This allows readers to easily share content with others or save it for later reference. Additionally, I added a pinning feature, enabling users to pin their favorite posts for quick access.
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-11.png]]
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-12.png]]
+![|100](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-11.png)![|102](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-12.png)
 
 ---
 
@@ -299,7 +298,7 @@ My goal was to have a blog integrated with Obsidian, where I already take notes.
 
 Setting the DNS/CNAME entry in my Squarespace domain to point to the DigitalOcean droplet was a crucial step. This configuration ensures that my domain correctly routes traffic to the blog hosted on the droplet, providing a seamless experience for visitors.
 
-![[2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-13.png]]
+![|500](../Blog-Attachments/2024-12-22-Setting-up-a-Blog-with-Obsidian-and-Hugo-13.png)
 
 ---
 
