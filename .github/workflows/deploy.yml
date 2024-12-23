@@ -1,37 +1,88 @@
-name: Deploy to GitHub Pages
+name: Deploy to DigitalOcean
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Build and Update Public Branch"]
+    types:
+      - completed
     branches:
-      - public
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+      - main
 
 jobs:
   deploy:
+    name: Deploy to Production
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: production
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Deploy to DigitalOcean droplet
+        uses: appleboy/ssh-action@master
+        env:
+          PDS_HOSTNAME: ${{ secrets.PDS_HOSTNAME }}
+          PDS_JWT_SECRET: ${{ secrets.PDS_JWT_SECRET }}
+          PDS_ADMIN_PASSWORD: ${{ secrets.PDS_ADMIN_PASSWORD }}
+          PDS_PLC_ROTATION_KEY: ${{ secrets.PDS_PLC_ROTATION_KEY }}
         with:
-          path: '.'
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: PDS_HOSTNAME,PDS_JWT_SECRET,PDS_ADMIN_PASSWORD,PDS_PLC_ROTATION_KEY
+          script: |
+            set -e  # Exit on any error
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v3
+            echo "Starting deployment..."
+
+            # Create PDS environment file
+            echo "Setting up PDS environment..."
+            sudo mkdir -p /pds
+            cat << EOF | sudo tee /pds/pds.env
+            PDS_HOSTNAME=${PDS_HOSTNAME}
+            PDS_JWT_SECRET=${PDS_JWT_SECRET}
+            PDS_ADMIN_PASSWORD=${PDS_ADMIN_PASSWORD}
+            PDS_PLC_ROTATION_KEY_K256_PRIVATE_KEY_HEX=${PDS_PLC_ROTATION_KEY}
+            PDS_DATA_DIRECTORY=/pds
+            PDS_BLOBSTORE_DISK_LOCATION=/pds/blocks
+            PDS_BLOB_UPLOAD_LIMIT=52428800
+            PDS_DID_PLC_URL=https://plc.directory
+            PDS_BSKY_APP_VIEW_URL=https://api.bsky.app
+            PDS_BSKY_APP_VIEW_DID=did:web:api.bsky.app
+            PDS_REPORT_SERVICE_URL=https://mod.bsky.app
+            PDS_REPORT_SERVICE_DID=did:plc:ar7c4by46qjdydhdevvrndac
+            PDS_CRAWLERS=https://bsky.network
+            LOG_ENABLED=true
+            EOF
+
+            # Clone/update the repository
+            cd /opt/blog
+
+            # Backup current deployment
+            if [ -d ".git" ]; then
+              git stash || true  # Save any local changes
+            fi
+
+            # Update or clone repository
+            if [ -d ".git" ]; then
+              echo "Updating existing repository..."
+              git fetch origin public
+              git reset --hard origin/public
+            else
+              echo "Cloning repository..."
+              git clone --branch public https://github.com/btuckerc/Blog.git .
+            fi
+
+            # Update services if docker-compose.yml exists
+            if [ -f "docker-compose.yml" ]; then
+              echo "Updating Docker services..."
+              sudo docker compose pull
+              sudo docker compose down || true  # Don't fail if services weren't running
+              sudo docker compose up -d
+            fi
+
+            # Reload nginx if config changed
+            if [ -f "nginx.conf" ]; then
+              echo "Reloading Nginx configuration..."
+              sudo docker exec nginx nginx -t && sudo docker exec nginx nginx -s reload
+            fi
+
+            echo "Deployment completed successfully!"
